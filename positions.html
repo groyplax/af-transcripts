@@ -146,17 +146,23 @@
     /* ── Sidebar (desktop) ── */
     .side-topics { list-style: none; margin-top: 16px; }
     .side-topic > a {
-      display: block;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
       padding: 5px 8px;
       border-radius: 5px;
       border-left: 2px solid transparent;
-      color: var(--text-dim);
+      color: var(--text);
       text-decoration: none;
       font-size: 0.8125rem;
+      font-weight: 650;
       line-height: 1.35;
     }
-    .side-topic > a:hover { color: var(--text); background: var(--surface); }
+    .side-topic > a .count { font-weight: 400; }
+    .side-topic > a:hover { color: var(--accent); background: var(--surface); }
     .side-topic.active > a { color: var(--accent); background: var(--accent-dim); border-left-color: var(--accent); border-radius: 0 5px 5px 0; }
+    /* The open topic's caret: clicking its name folds its position list (▾ open, ▸ folded). */
+    .side-car { margin-left: auto; font-size: 0.7rem; font-weight: 400; color: var(--accent); }
     .side-index { list-style: none; margin: 4px 0 10px 10px; border-left: 1px solid var(--border); }
     .side-index a {
       display: block;
@@ -173,7 +179,7 @@
 
     /* ── Main ── */
     .topic-title { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
-    h3.sec, .tl > summary {
+    h3.sec {
       margin: 28px 0 10px;
       font-size: 0.7rem;
       font-weight: 800;
@@ -183,12 +189,32 @@
     }
     .summary { font-size: 0.9375rem; color: var(--text); max-width: 80ch; }
 
-    .tl > summary { cursor: pointer; list-style: none; user-select: none; display: inline-block; }
-    .tl > summary::-webkit-details-marker { display: none; }
-    .tl > summary::before { content: '▸ '; }
-    .tl[open] > summary::before { content: '▾ '; }
-    .tl > summary:hover { opacity: 0.8; }
-    .timeline { list-style: none; border-left: 2px solid var(--border); padding-left: 16px; max-width: 80ch; }
+    /* ── Toggles: the quotes, the timeline and a key passage's "Read all" share one look, a small accent pill ── */
+    .tog, details.quotes > summary, .tl > summary {
+      display: block;
+      width: fit-content;
+      padding: 2px 11px 3px 9px;
+      background: var(--accent-dim);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1.5;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .tog:hover, details.quotes > summary:hover, .tl > summary:hover { border-color: var(--accent); }
+    details.quotes > summary::-webkit-details-marker, .tl > summary::-webkit-details-marker { display: none; }
+    .tog::before, details.quotes > summary::before, .tl > summary::before { content: '▸ '; }
+    .kp.open .tog::before, details.quotes[open] > summary::before, .tl[open] > summary::before { content: '▾ '; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .tl { margin-top: 18px; }
+    .timeline { list-style: none; border-left: 2px solid var(--border); padding-left: 16px; margin-top: 12px; max-width: 80ch; }
     .timeline li { margin-bottom: 14px; font-size: 0.875rem; color: var(--text-dim); }
     .timeline .period { display: block; font-weight: 600; color: var(--text); font-size: 0.8125rem; }
 
@@ -203,7 +229,9 @@
       padding: 2px 8px;
       cursor: pointer;
     }
-    .ctl-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .ctl-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .ctl-btn:disabled { opacity: 0.45; cursor: default; }
+    .ctl-group { display: flex; gap: 6px; flex-shrink: 0; }
 
     .pos { border-top: 1px solid var(--border); padding: 18px 0; scroll-margin-top: calc(var(--stick) + 12px); }
     .pos:last-child { border-bottom: 1px solid var(--border); }
@@ -231,19 +259,7 @@
     .quote-meta a.rep { color: var(--muted); font-family: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
     .quote-meta a.rep:hover { color: var(--accent); }
 
-    details.quotes { margin-top: 10px; }
-    details.quotes > summary {
-      cursor: pointer;
-      font-size: 0.8125rem;
-      color: var(--text-dim);
-      padding: 4px 0;
-      list-style: none;
-      user-select: none;
-    }
-    details.quotes > summary::-webkit-details-marker { display: none; }
-    details.quotes > summary::before { content: '▸ '; color: var(--accent); }
-    details.quotes[open] > summary::before { content: '▾ '; }
-    details.quotes > summary:hover { color: var(--accent); }
+    details.quotes { margin-top: 12px; }
 
     .quote-grid {
       display: grid;
@@ -291,10 +307,7 @@
     .kp-src a:hover { text-decoration: underline; }
     .kp-text { margin-top: 4px; font-size: 0.9375rem; line-height: 1.65; color: var(--text); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
     .kp.open .kp-text { display: block; -webkit-line-clamp: unset; line-clamp: none; overflow: visible; }
-    .kp-more { background: none; border: 0; padding: 2px 0; margin-top: 2px; font-family: inherit; font-size: 0.8125rem; color: var(--accent); cursor: pointer; }
-    .kp-more:hover { text-decoration: underline; }
-    .kp-more::before { content: '▸ '; }
-    .kp.open .kp-more::before { content: '▾ '; }
+    .kp-more { margin-top: 6px; }
     .kp .quote-meta { margin-top: 4px; }
 
     .state-msg { font-size: 0.875rem; color: var(--muted); padding: 40px 0; text-align: center; }
@@ -323,16 +336,37 @@
         gap: 48px;
         align-items: start;
       }
+      /* Sticks 20px from the top. Before it sticks it starts lower, under the headers, so JS keeps
+         --side-top at its real top and the box ends 20px above the window's bottom either way. */
       .sidebar {
         display: block;
         position: sticky;
         top: 20px;
-        max-height: calc(100vh - 40px);
+        max-height: calc(100vh - var(--side-top, 20px) - 20px);
         overflow-y: auto;
+        overscroll-behavior: contain;
         scrollbar-width: thin;
-        padding-right: 4px;
+        padding: 0 4px 12px 0;
       }
+      .to-top {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 20;
+        padding: 4px 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--text-dim);
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+        box-shadow: 0 2px 10px var(--shadow);
+      }
+      .to-top:hover { border-color: var(--accent); color: var(--accent); }
     }
+    .to-top[hidden] { display: none; }
+    @media (max-width: 1023px) { .to-top { display: none; } }
 
     /* ── Phone + tablet: one swipeable chip row keeps the sticky bar short ── */
     @media (max-width: 1023px) {
@@ -403,6 +437,7 @@
     <footer><span id="foot-upd"></span><a href="https://docs.google.com/forms/d/e/1FAIpQLSdFVo0FznkFfD4VMrMhvTrxI5SiGqacwLXyWMkojunxg-GN3w/viewform" target="_blank" rel="noopener">Report an error</a> · <a href="feed.xml">RSS</a></footer>
   </main>
 </div>
+<button type="button" class="to-top" id="to-top" hidden>↑ Top</button>
 
 <script id="positions">
 (function () {
@@ -423,10 +458,13 @@
   var sideEl = document.getElementById('side-topics');
   var topicEl = document.getElementById('topic');
   var chipbar = document.getElementById('chipbar');
+  var sidebar = document.getElementById('sidebar');
   var searchEls = [].slice.call(document.querySelectorAll('.search'));
   var topics = [];
   var byPos = {};       // position id -> topic
   var cur = null;       // topic currently rendered (null while searching)
+  var curPos = null;    // position id marked in the sidebar index
+  var sideOpen = true;  // the open topic's position list in the sidebar (folded by clicking its name)
   var query = '';
 
   function esc(s) {
@@ -490,7 +528,7 @@
     h += '<div class="kp-head"><span class="kp-title">' + (matched ? hl(q.title) : esc(q.title)) + '</span>';
     h += '<span class="kp-src">' + ep + ' · ' + esc(fmtDate(q.date)) + ' · <a href="' + esc(epHref(q.tid, t)) + '">▶ ' + esc(fmtTs(q.t)) + '</a></span></div>';
     h += '<div class="kp-text" data-q="' + esc(q.text) + '">“' + (matched ? hl(q.text) : esc(q.text)) + '”</div>';
-    h += '<button type="button" class="kp-more" aria-expanded="' + (matched ? 'true' : 'false') + '">' + (matched ? 'Show less' : 'Read all · ' + words(q.text) + ' words') + '</button>';
+    h += '<button type="button" class="kp-more tog" aria-expanded="' + (matched ? 'true' : 'false') + '">' + (matched ? 'Show less' : 'Read all · ' + words(q.text) + ' words') + '</button>';
     if (q.context) h += '<div class="quote-ctx">' + (matched ? hl(q.context) : esc(q.context)) + '</div>';
     h += '<div class="quote-meta">' + copyBtn(kid);
     h += '<button type="button" class="copy-btn cite-btn" data-tid="' + esc(q.tid) + '" data-t="' + esc(q.t) + '"' + (q.t_end ? ' data-te="' + esc(q.t_end) + '"' : '') + ' aria-expanded="false">cite</button>';
@@ -537,32 +575,46 @@
       return '<a class="topic-btn' + (t === active ? ' active' : '') + '" href="#' + esc(t.slug) + '">' +
              esc(t.topic) + ' <span class="count">· ' + (t.positions || []).length + '</span></a>';
     }).join('');
+    renderSide(active);
+    var a = topicsEl.querySelector('.active');
+    if (a && a.scrollIntoView) a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+  function renderSide(active) {
     sideEl.innerHTML = topics.map(function (t) {
-      var h = '<li class="side-topic' + (t === active ? ' active' : '') + '"><a href="#' + esc(t.slug) + '">' +
-              esc(t.topic) + ' <span class="count">· ' + (t.positions || []).length + '</span></a>';
-      if (t === active) {
+      var on = t === active;
+      var h = '<li class="side-topic' + (on ? ' active' : '') + '"><a href="#' + esc(t.slug) + '"' +
+              (on ? ' aria-expanded="' + sideOpen + '" title="' + (sideOpen ? 'Fold' : 'Show') + ' this topic’s positions"' : '') + '>' +
+              '<span>' + esc(t.topic) + '&nbsp;<span class="count">·&nbsp;' + (t.positions || []).length + '</span></span>' +
+              (on ? '<span class="side-car" aria-hidden="true">' + (sideOpen ? '▾' : '▸') + '</span>' : '') + '</a>';
+      if (on && sideOpen) {
         h += '<ol class="side-index">' + (t.positions || []).map(function (p, i) {
-          return '<li><a href="#' + esc(p.id) + '" title="' + esc(p.statement) + '"><span class="n">' + (i + 1) + ' · ' + esc(p.id) + '</span>' + esc(p.statement) + '</a></li>';
+          return '<li><a href="#' + esc(p.id) + '"' + (p.id === curPos ? ' class="cur"' : '') + ' title="' + esc(p.statement) + '"><span class="n">' + (i + 1) + ' · ' + esc(p.id) + '</span>' + esc(p.statement) + '</a></li>';
         }).join('') + '</ol>';
       }
       return h + '</li>';
     }).join('');
-    var a = topicsEl.querySelector('.active');
-    if (a && a.scrollIntoView) a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+  function setSide(open) {
+    if (sideOpen === open) return;
+    sideOpen = open;
+    renderSide(cur);
+    syncToggle();
   }
 
   function renderTopic(t) {
     cur = t;
+    sideOpen = false;  // start folded (the human, 2026-10-23); a position link re-opens it
     renderNav(t);
     var h = '<h2 class="topic-title">' + esc(t.topic) + '</h2>';
     if (t.summary) h += '<h3 class="sec">In brief</h3><p class="summary">' + esc(t.summary) + '</p>';
     if (t.timeline && t.timeline.length) {
-      h += '<details class="tl"><summary>Timeline (' + t.timeline.length + ')</summary><ul class="timeline">' + t.timeline.map(function (x) {
+      h += '<details class="tl"><summary>Timeline · ' + t.timeline.length + '</summary><ul class="timeline">' + t.timeline.map(function (x) {
         return '<li><span class="period">' + esc(x.period) + '</span>' + esc(x.note) + '</li>';
       }).join('') + '</ul></details>';
     }
-    h += '<div class="sec-row"><h3 class="sec">Positions</h3>' +
-         '<button type="button" class="ctl-btn" id="toggle-all">Expand all</button></div>';
+    h += '<div class="sec-row"><h3 class="sec">Positions</h3><span class="ctl-group">' +
+         '<button type="button" class="ctl-btn" id="expand-all" title="Open every position’s quotes">Expand all</button>' +
+         '<button type="button" class="ctl-btn" id="collapse-all" title="Fold the quotes, key passages and timeline, and the topic’s list in the index">Collapse all</button></span></div>';
     h += (t.positions || []).map(function (p, i) { return renderPosition(p, i); }).join('');
     topicEl.innerHTML = h;
     syncToggle();
@@ -585,12 +637,22 @@
                         (h || '<p class="state-msg">No matches.</p>');
   }
 
+  function sideShown() { return getComputedStyle(sidebar).display !== 'none'; }
+  // Expand all opens every position's quotes (and the index list); Collapse all folds the quotes,
+  // the key passages, the timeline and the index list. Each is greyed out when there's nothing left to do.
   function syncToggle() {
-    var b = document.getElementById('toggle-all');
-    if (!b) return;
-    var ds = topicEl.querySelectorAll('details.quotes');
-    var allOpen = ds.length && [].every.call(ds, function (d) { return d.open; });
-    b.textContent = allOpen ? 'Collapse all' : 'Expand all';
+    var ex = document.getElementById('expand-all'), co = document.getElementById('collapse-all');
+    if (!ex) return;
+    var side = sideShown();
+    var qs = [].slice.call(topicEl.querySelectorAll('details.quotes'));
+    ex.disabled = qs.every(function (d) { return d.open; }) && (sideOpen || !side);
+    co.disabled = !topicEl.querySelector('details[open], .kp.open') && (!sideOpen || !side);
+  }
+  function setAll(open) {
+    [].forEach.call(topicEl.querySelectorAll(open ? 'details.quotes' : 'details'), function (d) { d.open = open; });
+    if (!open) [].forEach.call(topicEl.querySelectorAll('.kp.open'), function (kp) { setPassage(kp, false); });
+    if (sideOpen !== open) setSide(open);
+    syncToggle();
   }
 
   // Hash → { topic, target element id }. Accepts #<slug>, #<position-id>, #<position-id>-q<n>, #<position-id>-p<n> (a passage).
@@ -624,22 +686,52 @@
       var el = document.getElementById(r.target);
       if (el && el.classList.contains('kp')) setPassage(el, true);
       else if (d) d.open = true;
+      markIndex(r.pos);
+      setSide(true);
       syncToggle();
       if (el) {
         el.classList.add('target');
         scrollToEl(el, same && !first);
       }
-      markIndex(r.pos);
     } else {
       markIndex(null);
       window.scrollTo({ top: 0, behavior: same && !first ? 'smooth' : 'instant' });
     }
+    fitSide();
+    revealSide(sideEl.querySelector('.side-index a.cur') || (!same && sideEl.querySelector('.side-topic.active > a')));
   }
   function markIndex(pid) {
+    curPos = pid;
     [].forEach.call(sideEl.querySelectorAll('.side-index a'), function (a) {
       a.classList.toggle('cur', a.getAttribute('href') === '#' + pid);
     });
   }
+
+  // The sidebar is as tall as the window below its current top (see .sidebar), so its last topic
+  // is always reachable by scrolling it alone.
+  var toTop = document.getElementById('to-top');
+  function fitSide() {
+    if (!sideShown()) return;
+    var top = Math.max(20, Math.round(sidebar.getBoundingClientRect().top));
+    sidebar.style.setProperty('--side-top', top + 'px');
+  }
+  // Scroll the sidebar (not the page) so el is in view: centred if it was out of sight.
+  function revealSide(el) {
+    if (!el || !sideShown()) return;
+    var s = sidebar.getBoundingClientRect(), r = el.getBoundingClientRect();
+    if (r.top < s.top || r.bottom > s.bottom) sidebar.scrollTop += r.top - s.top - (s.height - r.height) / 2;
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      fitSide();
+      toTop.hidden = window.pageYOffset < 2 * window.innerHeight;
+    });
+  }, { passive: true });
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
   function setQuery(v, from) {
     query = v.trim().length >= 2 ? v.trim() : '';
@@ -709,7 +801,7 @@
 
   topicEl.addEventListener('click', function (e) {
     var km = e.target.closest('.kp-more');
-    if (km) { var kp = km.closest('.kp'); setPassage(kp, !kp.classList.contains('open')); return; }
+    if (km) { var kp = km.closest('.kp'); setPassage(kp, !kp.classList.contains('open')); syncToggle(); return; }
     var b = e.target.closest('.flag-btn');
     if (b) { b.parentElement.nextElementSibling.classList.toggle('open'); return; }
     var cb = e.target.closest('.cite-btn');
@@ -743,12 +835,7 @@
       copyText(url).then(function () { flash('copied'); }, function () { flash('copy failed'); });
       return;
     }
-    if (e.target.id === 'toggle-all') {
-      var ds = topicEl.querySelectorAll('details.quotes');
-      var open = e.target.textContent === 'Expand all';
-      [].forEach.call(ds, function (d) { d.open = open; });
-      syncToggle();
-    }
+    if (e.target.id === 'expand-all' || e.target.id === 'collapse-all') setAll(e.target.id === 'expand-all');
   });
   topicEl.addEventListener('toggle', syncToggle, true);
 
@@ -756,10 +843,17 @@
   // (e.g. clicking the current topic while a search is showing).
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="#"]');
-    if (a && a.getAttribute('href') === location.hash) { e.preventDefault(); route(false); }
+    if (!a) return;
+    // The open topic's name in the sidebar folds or unfolds its position list instead.
+    if (cur && !query && a.parentNode.classList.contains('side-topic') && a.getAttribute('href') === '#' + cur.slug) {
+      e.preventDefault();
+      setSide(!sideOpen);
+      return;
+    }
+    if (a.getAttribute('href') === location.hash) { e.preventDefault(); route(false); }
   });
   window.addEventListener('hashchange', function () { route(false); });
-  window.addEventListener('resize', setStick);
+  window.addEventListener('resize', function () { setStick(); fitSide(); syncToggle(); });
 
   var catalogue = fetch(STATIC ? 'data/catalogue.json' : '/data/catalogue.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
   Promise.all([fetch(DATA_URL, { cache: 'no-store' })
