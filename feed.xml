@@ -5,8 +5,15 @@
     <link>https://groyplax.github.io/af-transcripts/</link>
     <description>Searchable transcripts of America First, hosted by Nick Fuentes: every episode, line by line, with timestamps linked to the video.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2026 00:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 09 Nov 2026 00:00:00 -0500</lastBuildDate>
     <atom:link href="https://groyplax.github.io/af-transcripts/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ep. 1776: TRUMP AMNESTY DEAL??? Trump Revives DACA DEAL With Dems</title>
+      <link>https://groyplax.github.io/af-transcripts/ep/1776/</link>
+      <guid isPermaLink="true">https://groyplax.github.io/af-transcripts/ep/1776/</guid>
+      <pubDate>Mon, 09 Nov 2026 00:00:00 -0500</pubDate>
+      <description>Nick argues Trump's talk of a deal with Democrats on DACA after the midterm defeat is a fundamental betrayal of the 2016 movement, and that the coming Democratic investigations, starting with Hegseth's impeachment, will wreck the GOP and open it to the Groypers.</description>
+    </item>
     <item>
       <title>Ep. 1775: RUBIO VS VANCE??? White House KNIFE FIGHT After Midterm ROUT</title>
       <link>https://groyplax.github.io/af-transcripts/ep/1775/</link>
@@ -209,13 +216,6 @@
       <guid isPermaLink="true">https://groyplax.github.io/af-transcripts/ep/1750/</guid>
       <pubDate>Mon, 21 Sep 2026 00:00:00 -0400</pubDate>
       <description>Nick covers Trump's ban of three outlets from the press pool, calling the media the left's enforcer, and argues the Greenland deal mostly formalizes the status quo and the US should have acquired the island outright.</description>
-    </item>
-    <item>
-      <title>Ep. 1749: IRAN WAR DAY 202: Saudi Arabia DRAGS America Into Yemen</title>
-      <link>https://groyplax.github.io/af-transcripts/ep/1749/</link>
-      <guid isPermaLink="true">https://groyplax.github.io/af-transcripts/ep/1749/</guid>
-      <pubDate>Thu, 17 Sep 2026 00:00:00 -0400</pubDate>
-      <description>Nick condemns Dan Bilzerian's call on Sneako's stream to target Israeli leaders, covers Saudi Arabia's pleas for US help in the Iran war, and says arrests are surging while deportations stay flat.</description>
     </item>
   </channel>
 </rss>
